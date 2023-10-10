@@ -1,4 +1,60 @@
 
+
+        const storedTheme = localStorage.getItem('theme')
+
+        const getPreferredTheme = () => {
+            if (storedTheme) {
+                return storedTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+
+        const setTheme = function (theme) {
+            if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-bs-theme', 'dark')
+            } else {
+                document.documentElement.setAttribute('data-bs-theme', theme)
+            }
+        }
+
+        setTheme(getPreferredTheme())
+
+        window.addEventListener('DOMContentLoaded', () => {
+            var el = document.querySelector('.theme-icon-active');
+            if (el != 'undefined' && el != null) {
+                const showActiveTheme = theme => {
+                    const activeThemeIcon = document.querySelector('.theme-icon-active use')
+                    const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
+                    const svgOfActiveBtn = btnToActive.querySelector('.mode-switch use').getAttribute('href')
+
+                    document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
+                        element.classList.remove('active')
+                    })
+
+                    btnToActive.classList.add('active')
+                    activeThemeIcon.setAttribute('href', svgOfActiveBtn)
+                }
+
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                    if (storedTheme !== 'light' || storedTheme !== 'dark') {
+                        setTheme(getPreferredTheme())
+                    }
+                })
+
+                showActiveTheme(getPreferredTheme())
+
+                document.querySelectorAll('[data-bs-theme-value]')
+                    .forEach(toggle => {
+                        toggle.addEventListener('click', () => {
+                            const theme = toggle.getAttribute('data-bs-theme-value')
+                            localStorage.setItem('theme', theme)
+                            setTheme(theme)
+                            showActiveTheme(theme)
+                        })
+                    })
+
+            }
+        })
     var locationData =[{"Id":"8457a52e-98be-4860-88fc-2ce11b80a75e","Name":"Oran","Code":"ORAN"},{"Id":"0566245a-7ba1-4b5a-b03b-3dd33e051f46","Name":"Algiers","Code":"ALGIERS"}];
     var AppointmentCategoryIdData =[{"Id":"5c2e8e01-796d-4347-95ae-0c95a9177b26","Name":"Normal","Code":"CATEGORY_NORMAL"},{"Id":"37ba2fe4-4551-4c7d-be6e-5214617295a9","Name":"Premium","Code":"CATEGORY_PREMIUM"},{"Id":"15044668-9bb4-477d-918b-4809370190b9","Name":"Prime Time","Code":"PRIME_TIME"}];
       var visaIdData =[{"Id":"c805c157-7e8f-4932-89cf-d7ab69e1af96","Name":"Schengen visa","VisaTypeCode":"SCHENGEN_VISA"},{"Id":"ec08e478-17f2-4516-914c-4d9198fd8d1e","Name":"National Visa","VisaTypeCode":"NATIONAL_VISA"}];
