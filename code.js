@@ -1,4 +1,22 @@
-
+ $(document).ready(function () {
+                                            $("#AppointmentDate2").kendoDatePicker({
+                                                format: "{0:yyyy-MM-dd}",
+                                                change: OnAppointmentdateChange,
+                                                open: OnAppointmentDateOpen,
+                                             });
+                                             $("#AppointmentSlot2").kendoDropDownList({
+                                                optionLabel: "--Select--",
+                                                dataTextField: "Name",
+                                                dataValueField: "Id",
+                                                filter: "contains",
+                                                select: OnSlotSelect,
+                                                open: OnSlotOpen,
+                                                template: $("#Slottemplate").html(),
+                                                footerTemplate: ({ instance }) => $("#slot-footer-template").html(),
+                                                height: 500
+                                            });
+                                            
+                                        });
 
         const storedTheme = localStorage.getItem('theme')
 
